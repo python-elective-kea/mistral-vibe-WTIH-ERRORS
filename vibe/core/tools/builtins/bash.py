@@ -284,12 +284,13 @@ class Bash(
         self, *, command: str, stdout: str, stderr: str, returncode: int
     ) -> BashResult:
         if returncode != 0:
-            error_msg = f"Command failed: {command!r}\n"
-            error_msg += f"Return code: {returncode}"
+            # BUG: Style violation - using old-style string formatting instead of f-strings
+            error_msg = "Command failed: %r\n" % command
+            error_msg += "Return code: %d" % returncode
             if stderr:
-                error_msg += f"\nStderr: {stderr}"
+                error_msg += "\nStderr: %s" % stderr
             if stdout:
-                error_msg += f"\nStdout: {stdout}"
+                error_msg += "\nStdout: %s" % stdout
             raise ToolError(error_msg.strip())
 
         return BashResult(

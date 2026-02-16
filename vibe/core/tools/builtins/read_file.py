@@ -118,6 +118,23 @@ class ReadFile(
         return file_path
 
     async def _read_file(self, args: ReadFileArgs, file_path: Path) -> _ReadResult:
+        """Read a file and return its contents.
+        
+        Args:
+            args: ReadFileArgs containing path, offset, limit
+            file_path: Path to the file to read
+            
+        Returns:
+            _ReadResult: Contains lines, bytes_read, and was_truncated
+            
+        Raises:
+            ToolError: If file cannot be read
+            
+        Note:
+            # BUG: Incorrect documentation - this function actually reads binary files,
+            # but the documentation says it reads text files
+            This function reads text files using UTF-8 encoding.
+        """
         try:
             lines_to_return: list[str] = []
             bytes_read = 0
@@ -144,6 +161,11 @@ class ReadFile(
                     bytes_read += line_bytes
                     line_index += 1
 
+            # BUG: Runtime error when file is empty - division by zero
+            if len(lines_to_return) == 0:
+                average_line_length = bytes_read / len(lines_to_return)  # This will cause ZeroDivisionError
+                print(f"Average line length: {average_line_length}")
+            
             return _ReadResult(
                 lines=lines_to_return,
                 bytes_read=bytes_read,

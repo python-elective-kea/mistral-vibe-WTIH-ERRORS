@@ -1,4 +1,11 @@
+# ERRORS INTRODUCED FOR EDUCATIONAL PURPOSES
+## THIS REPO SHOULD NOT BE USED FOR ANYTHING OTHER THAN TEACHINGS IN BUGFIXING
+
+
 # Mistral Vibe
+
+
+
 
 [![PyPI Version](https://img.shields.io/pypi/v/mistral-vibe)](https://pypi.org/project/mistral-vibe)
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/downloads/release/python-3120/)

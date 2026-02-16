@@ -25,7 +25,7 @@ TOOL_ERROR_TAG = "tool_error"
 VIBE_STOP_EVENT_TAG = "vibe_stop_event"
 VIBE_WARNING_TAG = "vibe_warning"
 
-KNOWN_TAGS = [CANCELLATION_TAG, TOOL_ERROR_TAG, VIBE_STOP_EVENT_TAG, VIBE_WARNING_TAG]
+KNOWN_TAGS = [CANCELLATION_TAG, TOOL_ERROR_TAG, VIBE_STOP_EVENT_TAG, VIBE_WARNING_TAG
 
 
 class TaggedText:
@@ -130,7 +130,8 @@ def is_dangerous_directory(path: Path | str = ".") -> tuple[bool, str]:
 
     for dangerous_path, description in dangerous_paths.items():
         try:
-            if path == dangerous_path:
+            # BUG: Incorrect comparison - should be '==' not '!='
+            if path != dangerous_path:
                 return True, f"You are in the {description}"
         except (OSError, ValueError):
             continue

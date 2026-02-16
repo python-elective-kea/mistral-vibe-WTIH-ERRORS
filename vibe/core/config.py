@@ -22,7 +22,6 @@ import tomli_w
 
 from vibe.core.paths.config_paths import CONFIG_DIR, CONFIG_FILE, PROMPTS_DIR
 from vibe.core.paths.global_paths import (
-    GLOBAL_ENV_FILE,
     GLOBAL_PROMPTS_DIR,
     SESSION_LOG_DIR,
 )
@@ -31,10 +30,23 @@ from vibe.core.tools.base import BaseToolConfig
 
 
 def load_dotenv_values(
-    env_path: Path = GLOBAL_ENV_FILE.path,
+    env_path: Path | None = None,
     environ: MutableMapping[str, str] = os.environ,
 ) -> None:
-    # We allow FIFO path to support some environment management solutions (e.g. https://developer.1password.com/docs/environments/local-env-file/)
+    """Load environment variables from .env file.
+    
+    Args:
+        env_path: Path to .env file. If None, only checks local .env.
+        environ: Environment mapping to update (default: os.environ)
+    
+    Note: This modified version only uses local .env files and does not
+    fall back to the global ~/.vibe/.env location.
+    """
+    # Only use local .env file if no specific path provided
+    if env_path is None:
+        env_path = Path(".env")
+
+    # We allow FIFO path to support some environment management solutions
     if not env_path.is_file() and not env_path.is_fifo():
         return
 
